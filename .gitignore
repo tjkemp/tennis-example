@@ -1,0 +1,51 @@
+# Project specific files
+Tennis_Linux
+Tennis_Linux_NoVis
+unity-environment.log
+checkpoint.pth
+*.zip
+TODO.txt
+
+# IDE generated
+.vscode
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+
+# IPython Notebook
+.ipynb_checkpoints
+
+# pyenv
+venv
+env
