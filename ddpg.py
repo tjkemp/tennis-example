@@ -43,7 +43,7 @@ class Critic(nn.Module):
         super(Critic, self).__init__()
         self.seed = torch.manual_seed(seed)
         self.fcs1 = nn.Linear(state_size, fcs1_units)
-        self.fc2 = nn.Linear(fcs1_units+action_size, fc2_units)
+        self.fc2 = nn.Linear(fcs1_units + action_size, fc2_units)
         self.fc3 = nn.Linear(fc2_units, fc3_units)
         self.fc4 = nn.Linear(fc3_units, 1)
         self.reset_parameters()
@@ -202,11 +202,16 @@ class ReplayBuffer:
         """Randomly samples a batch of experiences from memory."""
         experiences = random.sample(self.memory, k=self.batch_size)
 
-        states = torch.from_numpy(np.vstack([exp.state for exp in experiences if exp is not None])).float().to(device)
-        actions = torch.from_numpy(np.vstack([exp.action for exp in experiences if exp is not None])).float().to(device)
-        rewards = torch.from_numpy(np.vstack([exp.reward for exp in experiences if exp is not None])).float().to(device)
-        next_states = torch.from_numpy(np.vstack([exp.next_state for exp in experiences if exp is not None])).float().to(device)
-        dones = torch.from_numpy(np.vstack([exp.done for exp in experiences if exp is not None]).astype(np.uint8)).float().to(device)
+        states = torch.from_numpy(
+            np.vstack([exp.state for exp in experiences if exp is not None])).float().to(device)
+        actions = torch.from_numpy(
+            np.vstack([exp.action for exp in experiences if exp is not None])).float().to(device)
+        rewards = torch.from_numpy(
+            np.vstack([exp.reward for exp in experiences if exp is not None])).float().to(device)
+        next_states = torch.from_numpy(
+            np.vstack([exp.next_state for exp in experiences if exp is not None])).float().to(device)
+        dones = torch.from_numpy(
+            np.vstack([exp.done for exp in experiences if exp is not None]).astype(np.uint8)).float().to(device)
 
         return (states, actions, rewards, next_states, dones)
 
