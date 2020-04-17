@@ -75,7 +75,7 @@ class DDPGAgent(object):
             lr_actor=3e-4,
             lr_critic=3e-4,
             batch_size=512,
-            tau=1e-3,
+            tau=2e-1,
             gamma=0.99,
             replay_buffer_size=1e5,
             seed=42):
@@ -98,17 +98,28 @@ class DDPGAgent(object):
         self.critic_target = Critic(state_size, action_size, seed=seed).to(device)
         self.critic_optimizer = torch.optim.Adam(self.critic_local.parameters(), lr=lr_critic)
 
-        self.noise = OUNoise((20, action_size), seed)
+        self.noise = OUNoise(action_size, seed)
 
         self.memory = ReplayBuffer(action_size, self.replay_buffer_size, batch_size, seed)
 
+        self.learn_every = 1
+        self.learn_num_times = 1
+        self.learn_counter = 0
+
     def step(self, states, actions, rewards, next_states, dones):
+
         for state, action, reward, next_state, done in zip(states, actions, rewards, next_states, dones):
             self.memory.add(state, action, reward, next_state, done)
 
-        if len(self.memory) > self.batch_size:
-            experiences = self.memory.sample()
-            self._learn(experiences, self.gamma)
+    def learn(self, timestep):
+
+        if timestep % self.learn_every == 0:
+            if len(self.memory) < self.batch_size:
+                return
+
+            for _ in range(self.learn_num_times):
+                experiences = self.memory.sample()
+                self._learn(experiences, self.gamma)
 
     def act(self, state, noise=False):
         """Returns action for given state as per current policy."""
@@ -129,6 +140,8 @@ class DDPGAgent(object):
         self.noise.reset()
 
     def _learn(self, experiences, gamma):
+
+        self.learn_counter += 1
 
         states, actions, rewards, next_states, dones = experiences
 
@@ -177,7 +190,7 @@ class OUNoise:
     def sample(self):
         """Update internal state and return it as a noise sample."""
         x = self.state
-        dx = self.theta * (self.mu - x) + self.sigma * np.array([random.random() for i in range(len(x))])
+        dx = self.theta * (self.mu - x) + self.sigma * np.array([np.random.randn() for i in range(len(x))])
         self.state = x + dx
         return self.state
 
@@ -202,12 +215,9 @@ class ReplayBuffer:
         """Randomly samples a batch of experiences from memory."""
         experiences = random.sample(self.memory, k=self.batch_size)
 
-        states = torch.from_numpy(
-            np.vstack([exp.state for exp in experiences if exp is not None])).float().to(device)
-        actions = torch.from_numpy(
-            np.vstack([exp.action for exp in experiences if exp is not None])).float().to(device)
-        rewards = torch.from_numpy(
-            np.vstack([exp.reward for exp in experiences if exp is not None])).float().to(device)
+        states = torch.from_numpy(np.vstack([exp.state for exp in experiences if exp is not None])).float().to(device)
+        actions = torch.from_numpy(np.vstack([exp.action for exp in experiences if exp is not None])).float().to(device)
+        rewards = torch.from_numpy(np.vstack([exp.reward for exp in experiences if exp is not None])).float().to(device)
         next_states = torch.from_numpy(
             np.vstack([exp.next_state for exp in experiences if exp is not None])).float().to(device)
         dones = torch.from_numpy(
