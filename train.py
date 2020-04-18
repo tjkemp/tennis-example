@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-# coding: utf-8
 
 from collections import deque, namedtuple
-
-from ddpg import DDPGAgent as Agent
 
 from unityagents import UnityEnvironment
 import numpy as np
 import torch
+import matplotlib.pyplot as plt
+
+from ddpg import DDPGAgent as Agent
 
 def train(
         env,
@@ -83,10 +83,10 @@ def train(
         print(
             f"\rEpisode {i_episode}\tScore: {score:.2f}\tBest: {best_score:.2f}"
             f"\tMean: {window_mean:.2f}"
-            f"\tTimesteps: {timestep}\tMem: {memory_size}\tLearn: {num_learn}")
+            f"\tTimesteps: {timestep}\tMem: {memory_size}\tModel updates: {num_learn}")
 
         if window_mean >= target_score:
-            print(f"\nTarget score reached in {i_episode-100:d} episodes!")
+            print(f"\nTarget score reached in {i_episode:d} episodes!")
             torch.save(agent.actor_local.state_dict(), 'checkpoint_actor.pth')
             torch.save(agent.critic_local.state_dict(), 'checkpoint_critic.pth')
             break
@@ -108,8 +108,15 @@ def main():
     agent = Agent(state_size, action_size)
 
     scores = train(env, agent, n_episodes=1000)
-    env.close()
 
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    plt.plot(np.arange(1, len(scores) + 1), scores)
+    plt.ylabel('Score')
+    plt.xlabel('Episode #')
+    plt.savefig('scores.png')
+
+    env.close()
 
 if __name__ == "__main__":
     main()
