@@ -5,21 +5,21 @@
 
 ### Introduction
 
-This project implements a deep reinforcement learning policy gradient algorithm Deep Deterministic Policy Gradient (DDPG) which can operate over continuous action spaces, and trains it to play tennis.
+This project implements Deep Deterministic Policy Gradient (DDPG), a deep reinforcement learning policy gradient algorithm which can operate over continuous action spaces, and trains it to play tennis.
 
 ### The environment
 
-The algorithm is trained against environment similar to [Tennis](https://github.com/Unity-Technologies/ml-agents/tree/0.4.0/docs/Learning-Environment-Examples.md#tennis) environment.
+The algorithm is trained against an environment similar to ML-Agents package's [Tennis](https://github.com/Unity-Technologies/ml-agents/tree/0.4.0/docs/Learning-Environment-Examples.md#tennis) environment.
 
 ![Trained Agent][image1]
 
-In this environment, two agents control rackets to bounce a ball over a net. If an agent hits the ball over the net, it receives a reward of +0.1. If an agent lets a ball hit the ground or hits the ball out of bounds, it receives a reward of -0.01. Thus, the goal of both agent is to keep the ball in play.
+In this environment, two agents control rackets to bounce a ball over a net. If an agent hits the ball over the net, it receives a reward of +0.1. If an agent lets a ball hit the ground or hits the ball out of bounds, it gets a reward of -0.01. Thus, the goal of both agents is to keep the ball in play.
 
 ### Solving the environment
 
-The agent is modeled as a Deep Deterministic Policy Gradient (DDPG) agent (see the [paper](https://arxiv.org/pdf/1509.02971.pdf)).
+The agent is a Deep Deterministic Policy Gradient (DDPG) agent (see the [paper](https://arxiv.org/pdf/1509.02971.pdf)).
 
-State space is continuous and the size 2, action space is continuous space size per agent is 2. Each agent receives its own, local observation and same agent is simultaneously trained to play both agents through self-play. 
+State space is continuous of size 24, and action space is continuous space of size 2 per agent. Each agent receives its own, local observation and the model is simultaneously trained to play both agents through self-play. 
 
 To environment is considered solved when the agents must get an average score of +0.5 (over 100 consecutive episodes, after taking the maximum over both agents).
 
@@ -48,13 +48,13 @@ First, create and activate a python environment, and then install the requiremen
 pip install -r requirements.txt
 ```
 
-3. Test the set up by playing Tennis with an agent which does random moves:
+3. Test the set up by playing Tennis with an agent which makes random moves.
 
 ```bash
 python random_play.py
 ```
 
-4. See a trained agent play the game:
+4. See a trained agent play the game.
 
 ```bash
 python play.py
@@ -62,7 +62,7 @@ python play.py
 
 5. Train the agent
 
-You can train the agent my simply running `train.py`.
+Train the agent yourself by running `train.py`.
 
 ```
 $ python train.py

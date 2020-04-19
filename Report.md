@@ -17,7 +17,7 @@ The actor learns to approximate the best action for each state. The critic learn
 - Replay buffer size is 1e5
 - No weight decay
 
-The learning rate is and tau are bigger than in training Reacher environment in the previous project.
+The learning rate is, and tau have larger values than in training Reacher environment in the previous project.
 
 In contrast to the chosen parameters, the paper uses a larger layer sizes, and batch size of 64 for low dimensional problems.
 
