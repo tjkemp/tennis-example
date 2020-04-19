@@ -2,7 +2,7 @@
 
 ## Learning algorithm
 
-The implemented learning algorithm to solve the Reacher Unity environment is the Deep Deterministic Policy Gradient (DDPG) algorithm, first introduced by [research paper](https://arxiv.org/abs/1509.02971).
+The implemented learning algorithm to solve the Tennis Unity environment is the Deep Deterministic Policy Gradient (DDPG) algorithm, first introduced by [research paper](https://arxiv.org/abs/1509.02971).
 
 In the paper, they present an actor-critic, model-free algorithm based on the deterministic policy gradient that can operate over continuous action spaces.
 
